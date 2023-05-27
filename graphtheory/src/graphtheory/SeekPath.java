@@ -1,35 +1,152 @@
 package graphtheory;
 
-import javax.swing.JInternalFrame;
+import java.awt.EventQueue;
 
-import java.util.List;
-
+import javax.swing.JFrame;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
-public class SeekPath extends JInternalFrame {
+public class SeekPath {
 
-	private static final long serialVersionUID = 1L;
-
-	private JButton btnSalvar;
-	private JButton btnProcessar;
-	private JScrollPane jScrollPane1;
+	private JFrame frame;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
 	private JTable tblDados;
 
-	public SeekPath() {
-		initComponents();
+	public void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SeekPath window = new SeekPath();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
-	private void initComponents() {
-		jScrollPane1 = new JScrollPane();
+	public SeekPath() {
+		initialize();
+	}
+
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 600, 472);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+
+		JButton btnNewButton = new JButton("Processar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setBounds(475, 391, 99, 30);
+		frame.getContentPane().add(btnNewButton);
+
+		JButton btnNewButton_1 = new JButton("Salvar");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1.setBounds(366, 392, 99, 29);
+		frame.getContentPane().add(btnNewButton_1);
+
+		textField = new JTextField();
+		textField.setBounds(60, 11, 272, 29);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+
+		JLabel lblNewLabel = new JLabel("Buscar");
+		lblNewLabel.setBounds(12, 18, 53, 14);
+		frame.getContentPane().add(lblNewLabel);
+
+		JButton btnNewButton_1_1 = new JButton("Salvar");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_1_1.setBounds(342, 10, 99, 30);
+		frame.getContentPane().add(btnNewButton_1_1);
+
+		JLabel lblNewLabel_1 = new JLabel("Código");
+		lblNewLabel_1.setBounds(12, 69, 53, 14);
+		frame.getContentPane().add(lblNewLabel_1);
+
+		JLabel lblNewLabel_2 = new JLabel("Código");
+		lblNewLabel_2.setBounds(12, 100, 53, 14);
+		frame.getContentPane().add(lblNewLabel_2);
+
+		JLabel lblNewLabel_3 = new JLabel("KM");
+		lblNewLabel_3.setBounds(29, 131, 36, 14);
+		frame.getContentPane().add(lblNewLabel_3);
+
+		textField_1 = new JTextField();
+		textField_1.setBounds(60, 66, 68, 20);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+
+		textField_2 = new JTextField();
+		textField_2.setBounds(60, 97, 68, 20);
+		frame.getContentPane().add(textField_2);
+		textField_2.setColumns(10);
+
+		textField_3 = new JTextField();
+		textField_3.setBounds(60, 128, 68, 20);
+		frame.getContentPane().add(textField_3);
+		textField_3.setColumns(10);
+
+		textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		textField_4.setBounds(224, 66, 108, 20);
+		frame.getContentPane().add(textField_4);
+
+		textField_5 = new JTextField();
+		textField_5.setColumns(10);
+		textField_5.setBounds(224, 97, 108, 20);
+		frame.getContentPane().add(textField_5);
+
+		JLabel lblNewLabel_1_1 = new JLabel("Cidade");
+		lblNewLabel_1_1.setBounds(176, 69, 53, 14);
+		frame.getContentPane().add(lblNewLabel_1_1);
+
+		JLabel lblNewLabel_1_1_1 = new JLabel("Cidade");
+		lblNewLabel_1_1_1.setBounds(176, 100, 53, 14);
+		frame.getContentPane().add(lblNewLabel_1_1_1);
+
+		JLabel lblNewLabel_1_1_2 = new JLabel("(ORIGEM)");
+		lblNewLabel_1_1_2.setBounds(342, 69, 60, 14);
+		frame.getContentPane().add(lblNewLabel_1_1_2);
+
+		JLabel lblNewLabel_1_1_2_1 = new JLabel("(DESTINO)");
+		lblNewLabel_1_1_2_1.setBounds(342, 100, 60, 14);
+		frame.getContentPane().add(lblNewLabel_1_1_2_1);
+
+		JButton btnNewButton_1_1_1 = new JButton("+");
+		btnNewButton_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) tblDados.getModel();
+				model.addRow(new Object[]{"", "", "", "", ""});
+			}
+		});
+		btnNewButton_1_1_1.setBounds(527, 125, 47, 26);
+		frame.getContentPane().add(btnNewButton_1_1_1);
+
+		JScrollPane jScrollPane1 = new JScrollPane();
+		jScrollPane1.setBounds(12, 163, 562, 213);
+		frame.getContentPane().add(jScrollPane1);
+
 		tblDados = new JTable();
-		btnSalvar = new JButton();
-		btnProcessar = new JButton();
-
-		setTitle("Dijsktra - Busca pelo melhor caminho");
-
 		tblDados.setModel(new DefaultTableModel(
 				new Object[][] {},
 				new String[] {
@@ -37,97 +154,21 @@ public class SeekPath extends JInternalFrame {
 						"Cidade Origem",
 						"Código Destino",
 						"Cidade Destino",
-						"Distância",
+						"Distância"
 				}
 				) {
 			private static final long serialVersionUID = 1L;
-
 			boolean[] canEdit = new boolean[] {
 					false,
 					false,
 					false,
 					false,
-					false,
-					false,
+					false
 			};
-
 			public boolean isCellEditable(int rowIndex, int columnIndex) {
 				return canEdit[columnIndex];
 			}
 		});
-
 		jScrollPane1.setViewportView(tblDados);
-
-		btnSalvar.setText("SALVAR");
-		btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				listar();
-			}
-		});
-
-		btnProcessar.setText("PROCESSAR");
-		btnProcessar.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnFecharActionPerformed(evt);
-			}
-		});
-
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
-								.addGroup(layout.createSequentialGroup()
-										.addGap(18, 18, 18)
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-												.addComponent(btnSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(btnProcessar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-						.addContainerGap())
-				);
-		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						.addComponent(btnSalvar)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(btnProcessar)
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-				);
-
-		pack();
-	}
-
-	private void listar() {
-		List<Object> listaDados = getListaDados();
-
-		if (listaDados != null) {
-			DefaultTableModel tabela = (DefaultTableModel) tblDados.getModel();
-			tabela.setRowCount(0);
-
-			for (int i = 0; i < listaDados.size(); i++) {
-				Object[] dados = {
-						"Código Origem " + i,
-						"Cidade Origem " + i,
-						"Código Destino " + i,
-						"Cidade Destino " + i,
-						"Distância " + i,
-				};
-				tabela.addRow(dados);
-			}
-		}
-	}
-
-	private List<Object> getListaDados() {
-		return null;
-	}
-
-	private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {
-		this.dispose();
 	}
 }

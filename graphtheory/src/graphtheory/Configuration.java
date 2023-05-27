@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Configuration {
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		JFrame frame = new JFrame("Configuração");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setPreferredSize(new Dimension(400, 290));
