@@ -1,4 +1,5 @@
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -10,6 +11,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 public class SearchVisible extends JFrame{
 
@@ -53,6 +62,42 @@ public class SearchVisible extends JFrame{
 		txtDestinationCode.setText("");
 		txtDestinationCity.setText("");
 		txtKM.setText("");
+	}
+
+	private boolean loaded = false;
+
+	private void loadFromConfigFile(String filePath) {
+		if (loaded) {
+			JOptionPane.showMessageDialog(null, "Os dados já foram carregados anteriormente.");
+			return;
+		}
+
+		try {
+			File file = new File(filePath);
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				String[] data = line.split(",");
+				if (data.length == 5) {
+					String originCode = data[0];
+					String originCity = data[1];
+					String destinationCode = data[2];
+					String destinationCity = data[3];
+					String distance = data[4];
+
+					model.addRow(new Object[] { originCode, originCity, destinationCode, destinationCity, distance });
+				}
+			}
+
+			reader.close();
+			loaded = true;
+
+			JOptionPane.showMessageDialog(null, "Dados carregados com sucesso.");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Erro ao ler o arquivo: " + ex.getMessage());
+		}
 	}
 
 	private void createComponents() {
@@ -117,60 +162,41 @@ public class SearchVisible extends JFrame{
 		getContentPane().add(txtKM);
 
 		btnAdd = new JButton(new AbstractAction("+") {
-
 			private static final long serialVersionUID = 1L;
 
-			@Override					
+			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				if(txtKM.getText().isEmpty()) {
+				if (txtKM.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo <KM> Obrigatório!");
-				}
-				else if(Double.parseDouble(txtKM.getText()) <=-1 ) {
+				} else if (Double.parseDouble(txtKM.getText()) <= -1) {
 					JOptionPane.showMessageDialog(null, "Campo <KM> não pode ser Negativo!");
-				}
-				else if(txtOriginCode.getText().isEmpty()) {
+				} else if (txtOriginCode.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo <Código Origem> Obrigatório!");
-				}
-				else if(txtOriginCity.getText().isEmpty()) {
+				} else if (txtOriginCity.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo <Cidade Origem> Obrigatório!");
-				}
-				else if(txtDestinationCode.getText().isEmpty()) {
+				} else if (txtDestinationCode.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo <Cidade Destino> Obrigatório!");
-				}
-				else if(txtDestinationCity.getText().isEmpty()) {
+				} else if (txtDestinationCity.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo <Cidade Destino> Obrigatório!");
-				}
-				else if(txtOriginCity.getText().equals(txtDestinationCity.getText())) {
+				} else if (txtOriginCity.getText().equals(txtDestinationCity.getText())) {
 					JOptionPane.showMessageDialog(null, "Campos <Cidade Origem> e <Cidade Destino> não podem ser iguais");
-				}
-				else if(txtOriginCode.getText().equals(txtDestinationCode.getText())) {
+				} else if (txtOriginCode.getText().equals(txtDestinationCode.getText())) {
 					JOptionPane.showMessageDialog(null, "Campos <Código Origem> e <Código Destino> não podem ser iguais");
-				}
-				else {
-					model.addRow(new Object[] {txtOriginCode.getText(), txtOriginCity.getText(), txtDestinationCode.getText(), txtDestinationCity.getText(), Integer.parseInt(txtKM.getText())});
-
+				} else {
 					try {
-
-						for(int i = 0; i <= model.getRowCount()-1; i++) {
-
-							int sourceColumn = Integer.parseInt((String) model.getValueAt(i, 0));
-							int targetColumn = Integer.parseInt((String)model.getValueAt(i, 2));
-							int weightColumn = (Integer) model.getValueAt(i, 4);
-
-							System.out.println("Origem: " + sourceColumn);
-							System.out.println("Destino: " + targetColumn);
-							System.out.println("Peso: " + weightColumn);
-							g.createEdge(sourceColumn, targetColumn, weightColumn);
-						}
-
-					}catch (Exception er) {
-						er.printStackTrace();
+						int distanceValue = Integer.parseInt(txtKM.getText());
+						model.addRow(new Object[] {txtOriginCode.getText(), txtOriginCity.getText(), txtDestinationCode.getText(), txtDestinationCity.getText(), distanceValue});
+						g.createEdge(Integer.parseInt(txtOriginCode.getText()), Integer.parseInt(txtDestinationCode.getText()), distanceValue);
+					} catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Valor inválido no campo <KM>!");
+					} catch (InvalidAlgorithmParameterException e1) {
+						e1.printStackTrace();
 					}
 				}
 				clearFields();
 			}
 		});
+
 		btnAdd.setBounds(524, 115, 45, 25);
 		getContentPane().add(btnAdd);
 
@@ -225,5 +251,42 @@ public class SearchVisible extends JFrame{
 		});
 		btnProcess.setBounds(465, 430, 110, 25);
 		getContentPane().add(btnProcess);
+
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String filePath = "C:\\Teste\\config.txt";
+				loadFromConfigFile(filePath);
+			}
+		});
+
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String filePath = "C:\\Teste\\config.txt";
+
+				try {
+					File file = new File(filePath);
+					FileWriter writer = new FileWriter(file, true);
+					BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
+					for (int i = 0; i < model.getRowCount(); i++) {
+						String originCode = (String) model.getValueAt(i, 0);
+						String originCity = (String) model.getValueAt(i, 1);
+						String destinationCode = (String) model.getValueAt(i, 2);
+						String destinationCity = (String) model.getValueAt(i, 3);
+						String distance = model.getValueAt(i, 4).toString();
+
+						String line = originCode + "," + originCity + "," + destinationCode + "," + destinationCity + "," + distance;
+						bufferedWriter.write(line);
+						bufferedWriter.newLine();
+					}
+
+					bufferedWriter.close();
+					writer.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Erro ao salvar o arquivo: " + ex.getMessage());
+				}
+			}
+		});
 	}
 }

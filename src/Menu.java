@@ -1,69 +1,71 @@
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+public class Menu extends JFrame {
 
-public class Menu {
-
-	private JMenuBar menuBar;
-	private JMenu systemMenu;
-	private JMenu routeMenu;
-	private JMenuItem systemExitItem;
-	private JMenuItem systemConfigItem;
-	private JMenuItem routeVisibleItem;
-	private JFrame frame;
+	private static final long serialVersionUID = 1L;
 
 	public Menu() {
-		createMenu();
-	}
+		setTitle("Menu");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(400, 300);
+		setLocationRelativeTo(null);
 
-	private void createMenu() {
-		menuBar = new JMenuBar();
+		JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
+		JLabel rotulo = new JLabel("Menu");
+		rotulo.setHorizontalAlignment(SwingConstants.CENTER);
+		rotulo.setFont(new Font("Arial", Font.BOLD, 24));
 
-		systemMenu = new JMenu("Sistema");
-		systemConfigItem = new JMenuItem("Configuração");
-		systemConfigItem.addActionListener(new ActionListener() {
-
+		JButton botaoConfig = new JButton("Configuração");
+		botaoConfig.setFont(new Font("Arial", Font.PLAIN, 14));
+		botaoConfig.setBackground(new Color(51, 153, 255));
+		botaoConfig.setForeground(Color.WHITE);
+		botaoConfig.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Configuration().setVisible(true);
 			}
 		});
-		systemExitItem = new JMenuItem("Sair");
-		systemExitItem.addActionListener(new ActionListener() {
 
+		JButton botaoSair = new JButton("Sair");
+		botaoSair.setFont(new Font("Arial", Font.PLAIN, 14));
+		botaoSair.setBackground(new Color(255, 51, 51));
+		botaoSair.setForeground(Color.WHITE);
+		botaoSair.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
-				System.out.println("Saiu do sistema!");
 			}
 		});
 
-		systemMenu.add(systemConfigItem);
-		systemMenu.addSeparator();
-		systemMenu.add(systemExitItem);
-
-		routeMenu = new JMenu("Rota");
-		routeVisibleItem = new JMenuItem("Menor caminho");
-		routeVisibleItem.addActionListener(new ActionListener() {
-
+		JButton botaoRota = new JButton("Rota");
+		botaoRota.setFont(new Font("Arial", Font.PLAIN, 14));
+		botaoRota.setBackground(new Color(0, 204, 102));
+		botaoRota.setForeground(Color.WHITE);
+		botaoRota.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new SearchVisible().setVisible(true);
 			}
 		});
-		routeMenu.add(routeVisibleItem);
 
-		menuBar.add(systemMenu);
-		menuBar.add(routeMenu);
+		JPanel painelBotoes = new JPanel(new GridLayout(3, 1, 0, 10));
+		painelBotoes.add(botaoConfig);
+		painelBotoes.add(botaoSair);
+		painelBotoes.add(botaoRota);
 
-		frame = new JFrame("Sistema de Rota");
-		frame.setSize(1000, 600);
-		frame.setJMenuBar(menuBar);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		painelPrincipal.add(rotulo, BorderLayout.CENTER);
+		painelPrincipal.add(painelBotoes, BorderLayout.EAST);
+
+		setContentPane(painelPrincipal);
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			Menu tela = new Menu();
+			tela.setVisible(true);
+		});
 	}
 }
