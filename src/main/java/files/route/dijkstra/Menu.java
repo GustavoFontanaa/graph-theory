@@ -1,3 +1,8 @@
+package files.route.dijkstra;
+
+import files.route.dijkstra.view.Configuration;
+import files.route.dijkstra.view.FindRoute;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,15 +15,15 @@ public class Menu extends JFrame {
 	public Menu() {
 		setTitle("Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(400, 300);
+		setSize(850, 600);
 		setLocationRelativeTo(null);
 
 		JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
-		JLabel rotulo = new JLabel("Menu");
+		JLabel rotulo = new JLabel("Dijkstra-route-files");
 		rotulo.setHorizontalAlignment(SwingConstants.CENTER);
 		rotulo.setFont(new Font("Arial", Font.BOLD, 24));
 
-		JButton botaoConfig = new JButton("Configuração");
+		JButton botaoConfig = new JButton("Settings");
 		botaoConfig.setFont(new Font("Arial", Font.PLAIN, 14));
 		botaoConfig.setBackground(new Color(51, 153, 255));
 		botaoConfig.setForeground(Color.WHITE);
@@ -29,7 +34,7 @@ public class Menu extends JFrame {
 			}
 		});
 
-		JButton botaoSair = new JButton("Sair");
+		JButton botaoSair = new JButton("Exit");
 		botaoSair.setFont(new Font("Arial", Font.PLAIN, 14));
 		botaoSair.setBackground(new Color(255, 51, 51));
 		botaoSair.setForeground(Color.WHITE);
@@ -40,21 +45,21 @@ public class Menu extends JFrame {
 			}
 		});
 
-		JButton botaoRota = new JButton("Rota");
+		JButton botaoRota = new JButton("Find Route");
 		botaoRota.setFont(new Font("Arial", Font.PLAIN, 14));
 		botaoRota.setBackground(new Color(0, 204, 102));
 		botaoRota.setForeground(Color.WHITE);
 		botaoRota.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new SearchVisible().setVisible(true);
+				new FindRoute().setVisible(true);
 			}
 		});
 
 		JPanel painelBotoes = new JPanel(new GridLayout(3, 1, 0, 10));
+		painelBotoes.add(botaoRota);
 		painelBotoes.add(botaoConfig);
 		painelBotoes.add(botaoSair);
-		painelBotoes.add(botaoRota);
 
 		painelPrincipal.add(rotulo, BorderLayout.CENTER);
 		painelPrincipal.add(painelBotoes, BorderLayout.EAST);
